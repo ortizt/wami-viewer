@@ -7,6 +7,8 @@ import io from 'socket.io-client'
 
 Vue.config.productionTip = false
 
+require('./assets/styles.css')
+
 Vue.prototype.$socket = io('http://localhost:3000')
 // require('./assets/styles/leaflet.css')
 /* eslint-disable no-new */

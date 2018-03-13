@@ -9,7 +9,8 @@ export default new Router({
     {
       path: '/',
       name: 'Wami',
-      component: Wami
+      component: Wami,
+      props: true
     }
   ]
 })
