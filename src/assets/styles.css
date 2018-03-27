@@ -26,6 +26,7 @@
     padding-top: 10px;
     margin-left: 10px;
     font-size: 25px;
+    width: 210px;
 }
 i:hover {
     color: white;
@@ -41,6 +42,6 @@ h4 {
     margin: 15px 0px
 }
 .route {
-    width: 1670px !important;
+    width: calc(100% - 250px) !important;
     height: inherit !important;
 }

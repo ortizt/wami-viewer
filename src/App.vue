@@ -11,13 +11,13 @@
       <hr class="sidebreak">
       <h4>Select Option to Display Media Controls</h4>
       <div class='row button' v-show='selected !== null'>
-        <div class='col-sm-4'><i class='fa fa-backward'></i></div>
-        <div class='col-sm-4'>
+        <div class='col-sm-3'><i class='fa fa-backward'></i></div>
+        <div class='col-sm-3'>
           <i v-show='!play' @click='playPause' class='fa fa-play'></i>
           <i v-show='play' @click='playPause' class='fa fa-pause'></i>
         </div>
-        <div class='col-sm-4'><i class='fa fa-forward'></i></div>
-        <!-- <i class='fa fa-play'></i> -->
+        <div class='col-sm-3'><i @click='stop' class='fa fa-stop'></i></div>
+        <div class='col-sm-3'><i class='fa fa-forward'></i></div>
       </div>
       <hr class="sidebreak">
       <!-- <h4>Coordinates and Zoom</h4>
@@ -39,13 +39,13 @@
 import Vue from 'vue'
 import Multiselect from 'vue-multiselect'
 Vue.component('multiselect', Multiselect)
+// var selection = ''
 export default {
   name: 'App',
   data () {
     return {
       selected: null,
       play: false,
-      imgurls: [],
       filename: [],
       hash: [],
       imageUrl: ''
@@ -55,39 +55,60 @@ export default {
     playPause () {
       if (this.play) {
         this.play = false
-        this.imageUrl = null
-        this.selected = null
       } else {
         this.play = true
-        this.image()
+        // this.setSelection()
+        this.displayImage()
       }
     },
-    image () {
-      if ((this.play && Boolean(this.selected)) === true) {
-        var count = this.hash.name.length
-        for (var i = 0; i < count; i++) {
-          console.log(this.hash.name[i])
-          console.log(this.selected)
-          if (this.hash.name[i] === this.selected) {
-            this.imageUrl = this.hash.bs64[i]
-            return this.imageUrl
-          }
-          this.imageUrl = null
-          // return this.imageUrl
+    stop () {
+      this.imageUrl = null
+      this.selected = null
+      this.play = false
+    },
+    setSelection () {
+      // var selection = Vue.util.extend({}, this.selected)
+      console.log(this.selected)
+      // this.$socket.emit('image', this.selected)
+      this.$socket.on('images', (temp) => {
+        this.filename = temp
+      })
+      // if ((this.play && Boolean(this.selected)) === true) {
+      //   var count = this.hash.name.length
+      //   for (var i = 0; i < count; i++) {
+      //     console.log(this.hash.name[i])
+      //     console.log(this.selected)
+      //     if (this.hash.name[i] === this.selected) {
+      //       this.imageUrl = this.hash.bs64[i]
+      //       return this.imageUrl
+      //     }
+      //     this.imageUrl = null
+      //     // return this.imageUrl
+      //   }
+      // }
+    },
+    displayImage () {
+      console.log(this.selected)
+      this.$socket.emit('selected', this.selected)
+      this.$socket.on('image', (image) => {
+        if (image) {
+          var img = 'data:image/jpeg;base64,' + image.buffer
+          this.imageUrl = img
         }
-      }
+      })
     }
   },
   created () {
-    this.$socket.on('image', (image, temp) => {
-      if (image) {
-        var img = 'data:image/jpeg;base64,' + image.buffer
-        this.imgurls.push(img)
-        this.filename = temp
-        this.hash = {name: this.filename, bs64: this.imgurls}
-        console.log('image served')
-      }
-    })
+    this.setSelection()
+    // this.$socket.on('image', (image, temp) => {
+    //   if (image) {
+    //     var img = 'data:image/jpeg;base64,' + image.buffer
+    //     this.imgurls.push(img)
+    //     this.filename = temp
+    //     this.hash = {name: this.filename, bs64: this.imgurls}
+    //     console.log('image served')
+    //   }
+    // })
   }
 }
 </script>

@@ -32,7 +32,7 @@ export default{
   props: ['play', 'selected', 'imageUrl'],
   data () {
     return {
-      zoom: 6,
+      zoom: 4,
       center: [34, -106],
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -41,27 +41,13 @@ export default{
       ycoord: null,
       zoomnew: null,
       bounds: [[32, -130], [13, -100]],
-      // imageUrl: '',
-      // imgurls: [],
+
       options: {
         opacity: 0.5
       },
-      // filename: [],
-      // hash: [],
       value: ''
     }
   }
-  // created () {
-  //   this.$socket.on('image', (image, temp) => {
-  //     if (image) {
-  //       var img = 'data:image/jpeg;base64,' + image.buffer
-  //       this.imgurls.push(img)
-  //       this.filename = temp
-  //       this.hash = {name: this.filename, bs64: this.imgurls}
-  //       console.log('image served')
-  //     }
-  //   })
-  // }
 }
 </script>
 
@@ -72,9 +58,6 @@ export default{
     position: fixed;
     display: block !important;
     width: inherit !important;
-    /* height: 75% !important; */
-    /* float: right !important; */
-    /* padding-top: 100px !important; */
 }
 .select {
   padding-bottom: 0px;
